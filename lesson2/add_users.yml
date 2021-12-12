@@ -14,7 +14,7 @@
       comment: "{{ item }}@example.com"
       create_home: yes
       password: "{{ user_pass | password_hash('sha512') }}"
-
+      update_password: on_create
     with_items:
       - "{{ users }}"
 
