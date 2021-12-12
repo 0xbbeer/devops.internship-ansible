@@ -1,0 +1,27 @@
+---
+- hosts: webservers
+  vars:
+    http_port: 80
+  
+  tasks:
+  - name: Remove httpd
+    yum:
+      name: httpd
+      state: absent
+
+  - name: Delete index.html
+    file:
+      path: /var/www/html/index.html
+      state: absent
+ 
+  - name: Enable 80 port in firewall
+    firewalld:
+      zone: public
+      port: "{{ http_port }}/tcp"
+      permanent: true
+      state: disabled
+
+  - name: Reload firewalld
+    service:
+      name: firewalld
+      state: reloaded

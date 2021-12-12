@@ -1,0 +1,20 @@
+---
+- hosts: webservers
+  vars:
+    users:
+      - Alice
+      - Bob
+      - Carol
+  vars_files:
+    - user_pass.yaml
+  tasks:
+  - name: Add user "{{ item }}"
+    user:
+      name: "{{ item }}"
+      comment: "{{ item }}@example.com"
+      create_home: yes
+      password: "{{ user_pass | password_hash('sha512') }}"
+
+    with_items:
+      - "{{ users }}"
+

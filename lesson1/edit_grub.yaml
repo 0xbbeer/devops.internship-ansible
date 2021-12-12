@@ -1,0 +1,49 @@
+---
+- hosts: webservers
+  
+  tasks:
+  - name: Check if net.ifnames=0 exsist in grub file
+    lineinfile:
+      backup: true
+      path: /etc/default/grub
+      regexp: '^GRUB_CMDLINE_LINUX=".*net.ifnames=0'
+      state: absent
+    check_mode: true
+    register: grub_net_ifnames_check
+    changed_when: false
+
+  - name: Check if biosdevname=0 exsist in grub file
+    lineinfile:
+      backup: true
+      path: /etc/default/grub
+      regexp: '^GRUB_CMDLINE_LINUX=".*biosdevname=0'
+      state: absent
+    check_mode: true
+    register: grub_biosdevname_check
+    changed_when: false
+
+  - name: Insert net.ifnames=0 if not exsist  
+    lineinfile:    
+      backrefs: true    
+      path: /etc/default/grub    
+      regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"    
+      line: '\1 net.ifnames=0"'
+    when: grub_net_ifnames_check.found == 0
+    notify: grub2-mkconfig
+
+  - name: Insert biosdevname=0 if not exsist  
+    lineinfile:    
+      backrefs: true    
+      path: /etc/default/grub    
+      regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"    
+      line: '\1 biosdevname=0"'
+    when: grub_biosdevname_check.found == 0
+    notify: grub2-mkconfig
+
+  handlers:
+    - name: grub2-mkconfig
+      shell: grub2-mkconfig
+  
+
+  
+  

@@ -1,0 +1,31 @@
+---
+- hosts: webservers
+  vars:
+    http_port: 80
+  
+  tasks:
+  - name: Install httpd
+    yum:
+      name: httpd
+      state: latest
+  - name: Enable and start httpd.service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+  - name: Create index.html with text
+    copy:
+      dest: /var/www/html/index.html
+      content: |
+        Welcome to my web server
+  - name: Ensure that firewalld started and enabled
+    service:
+      name:  firewalld
+      state: started
+      enabled: yes
+  - name: Enable 80 port in firewall
+    firewalld:
+      zone: public
+      port: "{{ http_port }}/tcp"
+      permanent: true
+      state: enabled
