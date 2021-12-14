@@ -1,0 +1,4 @@
+---
+anonymous_enable: yes
+upload_path: /var/ftp/pub/upload/
+ftp_path: /var/ftp/pub/

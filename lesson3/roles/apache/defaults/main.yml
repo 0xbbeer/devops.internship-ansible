@@ -1,0 +1,7 @@
+---
+apache_packages_state: present
+apache_restart_state: restarted
+apache_state: started
+apache_enabled: true
+apache_server_admin: admin@example.com
+apache_port: 80

@@ -1,0 +1,5 @@
+---
+- name: Ensure httpd is installed on RedHat
+  package:
+    name: "{{ apache_package }}"
+    state: "{{ apache_packages_state }}"

@@ -1,0 +1,3 @@
+---
+- name: Ensure Apache2 is installed on Debian\Ubuntu.
+  apt: "name={{ apache_package }} state={{ apache_packages_state }}"
