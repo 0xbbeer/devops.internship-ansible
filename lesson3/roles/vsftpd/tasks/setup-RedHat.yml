@@ -1,0 +1,13 @@
+---
+- name: Ensure vsftpd is installed on RedHat
+  package:
+    name: vsftpd
+    state: latest
+
+- name: install Python libs for SELinux 
+  yum:
+    name: 
+      - python3-libselinux 
+      - python3-libsemanage 
+      - python3-policycoreutils
+    state: latest

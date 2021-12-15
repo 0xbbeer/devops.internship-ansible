@@ -1,0 +1,47 @@
+---
+- name: Create upload directory
+  file:
+    path: "{{ upload_path }}"
+    state: directory
+    owner: ftp
+    group: ftp
+
+- name: Change Home for FTP User
+  user:
+    name: ftp
+    state: present
+    home: "{{ ftp_path }}"
+
+
+- name: Allow ftp to modify files in "{{ upload_path }}"
+  sefcontext:
+    target: "{{ upload_path }}"
+    setype: public_content_rw_t
+    reload: yes
+    state: present
+  notify:
+    - Apply new SELinux file context to filesystem
+
+- name: Set ftpd_anon_write
+  seboolean:
+    name: allow_ftpd_anon_write
+    state: yes
+    persistent: yes
+
+- firewalld:
+    port: 20-21/tcp
+    permanent: true
+    state: enabled
+
+- firewalld:
+    port: 30000-31000/tcp
+    permanent: yes
+    state: enabled
+  notify: 
+    - Reload firewalld service
+
+- name: Create vsftpd.conf from template
+  template:
+    src: vsftpd.j2
+    dest: /etc/vsftpd/vsftpd.conf
+  notify: restart vsftpd

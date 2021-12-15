@@ -3,5 +3,8 @@ node1 ansible_host=node1.example.com
 node2 ansible_host=node2.example.com
 
 [webservers]
-node1 ansible_host=localhost
+node1 ansible_host=node1.example.com
+
+[ftp]
+node2 ansible_host=node2.example.com
 

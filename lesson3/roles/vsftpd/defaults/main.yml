@@ -2,3 +2,6 @@
 anonymous_enable: yes
 upload_path: /var/ftp/pub/upload/
 ftp_path: /var/ftp/pub/
+local_enable: YES
+anon_root: /var/ftp/pub/upload
+no_anon_password: YES

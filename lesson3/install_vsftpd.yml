@@ -1,6 +1,6 @@
 ---
 - name: Install vsftpd
-  hosts: webservers
+  hosts: ftp
 
   roles:
     - role: vsftpd
